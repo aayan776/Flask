@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Age Calculator</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h1>Age Calculator</h1>
+<form action="/calculate" method="POST">
+<label for="birth_year">Enter your birth year:</label>
+<input type="text" id="birth_year" name="birth_year" required>
+<button type="submit">Calculate Age</button>
+</form>
+{% if age %}
+<h3>Your age is: {{ age }} years</h3>
+{% endif %}
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+</body>
+</html>
