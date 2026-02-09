@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locate Me</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <h1>Locate Me</h1>
+
+    <div>
+        <input type="text" id="location-input" placeholder="Enter a location (e.g., New York)">
+        <button id="search-btn">Search Location</button>
+    </div>
+    <p id="status"></p>
+
+    <div>
+        <button id="locate-btn">Locate Me</button>
+        <button id="reset-btn">Reset Map</button>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+        const map = L.map("map").setView([0, 0], 2);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        document.getElementById("search-btn").addEventListener("click", () => {
+            const location = document.getElementById("location-input").value.trim();
+            const status = document.getElementById("status");
+
+            if (!location) {
+                status.textContent = "Please enter a location.";
+                return;
+            }
+
+            status.textContent = "Searching...";
+
+            fetch("/geocode", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ location })
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.error) {
+                        status.textContent = data.error;
+                        return;
+                    }
+
+                    const { latitude, longitude, display_name } = data;
+                    map.setView([latitude, longitude], 15);
+                    L.marker([latitude, longitude])
+                        .addTo(map)
+                        .bindPopup(`<b>${display_name}</b>`)
+                        .openPopup();
+                    status.textContent = `Location found: ${display_name}`;
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    status.textContent = "Error fetching location.";
+                });
+        });
+
+        document.getElementById("locate-btn").addEventListener("click", () => {
+            const status = document.getElementById("status");
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const { latitude, longitude } = pos.coords;
+                        map.setView([latitude, longitude], 15);
+                        L.marker([latitude, longitude])
+                            .addTo(map)
+                            .bindPopup(`<b>You are here</b>`)
+                            .openPopup();
+                        status.textContent = "Your location is detected.";
+                    },
+                    (error) => {
+                        status.textContent = "Unable to retrieve your location.";
+                        console.error(error);
+                    }
+                );
+            } else {
+                status.textContent = "Geolocation not supported by your browser.";
+            }
+        });
+
+        document.getElementById("reset-btn").addEventListener("click", () => {
+            map.setView([0, 0], 2);
+            document.getElementById("status").textContent = "";
+            document.getElementById("location-input").value = "";
+        });
+    </script>
+</body>
+
+</html>
