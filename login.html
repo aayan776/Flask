@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Registration</title>
+<style>
+body {
+font-family: Arial;
+background: #f5f6f7;
+text-align: center;
+}
+
+.box {
+width: 350px;
+margin: 80px auto;
+padding: 20px;
+background: white;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input {
+width: 90%;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+button {
+width: 95%;
+padding: 10px;
+background: #4CAF50;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 16px;
+}
+
+button:hover {
+background: #45a049;
+}
+
+a {
+text-decoration: none;
+color: #007bff;
+}
+</style>
+</head>
+<body>
+    <div class = 'box'>
+        <h2>Log In</h2>
+        <form method = "POST", action = "/login">
+            <input type = "text" name = "username" placeholder = "Enter username" required>
+            <input type = "password" name = "password" placeholder = "Enter password" required>
+            <button type = 'submit'>Log In</button>
+        </form>
+        <p>Don't have an account?
+            <a href="/register">Sign Up</a>
+        </p>
+    </div>
+</body>
+</html>

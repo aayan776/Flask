@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>User Registration</title>
+<title>Dashboard</title>
 <style>
 body {
 font-family: Arial;
@@ -10,15 +10,15 @@ text-align: center;
 }
 
 .box {
-width: 350px;
-margin: 80px auto;
+width: 450px;
+margin: 40px auto;
 padding: 20px;
 background: white;
 border-radius: 10px;
 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-input {
+input, textarea {
 width: 90%;
 padding: 10px;
 margin: 10px 0;
@@ -40,25 +40,27 @@ font-size: 16px;
 button:hover {
 background: #45a049;
 }
-
-a {
-text-decoration: none;
-color: #007bff;
-}
 </style>
 </head>
 <body>
     <div class = 'box'>
-        <h2>Create Account</h2>
-        <form method = "POST">
-            <input type = "text" name = "username" placeholder = "Enter username" required>
+        <h2>Create Resume</h2>
+        <form action = "/resume", enctype = "multipart/form-data", method = "POST">
+
+            <input type = "file" name = "image" required>
+
+            <input type = "text" name = "fullname" placeholder = "Enter full name" required>
+
             <input type = "email" name = "email" placeholder = "Enter email" required>
-            <input type = "password" name = "password" placeholder = "Enter password" required>
-            <button type = 'submit'>Sign Up</button>
+
+            <textarea name = 'address', placeholder = "Address", required></textarea>
+
+            <input type = "text" name = "mobile" placeholder = "Enter mobile number" required>
+
+            <textarea name = 'skills', placeholder = "Skills", required></textarea>
+
+            <button type = 'submit'>Create</button>
         </form>
-        <p>Already have an account?
-            <a href="/login">Log In</a>
-        </p>
     </div>
 </body>
 </html>

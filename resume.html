@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<style>
+body {
+font-family: Arial;
+background: #f5f6f7;
+text-align: center;
+}
+
+.resume-box {
+width: 500px;
+margin: 40px auto;
+padding: 20px;
+background: white;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+text-align: left;
+}
+
+img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    display: block;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    font-size: 10px;
+    line-height: 1.6;
+}
+</style>
+</head>
+<body>
+    <div class = 'resume-box'>
+        <img src="{{ image_path }}" alt="Profile Photo">
+        <h2>{{ fullname }}</h2>
+        <p><strong>Address:</strong>{{ address }}</p>
+        <p><strong>Email:</strong>{{ email }}</p>
+        <p><strong>Mobile:</strong>{{ mobile }}</p>
+        <p><strong>Skills:</strong>{{ skills }}</p>
+    </div>
+</body>
+</html>
