@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect
 import sqlite3
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder = 'H:/Flask/User Login app/template')
 
 def init_db():
     con = sqlite3.connect('users.db')
@@ -68,7 +68,7 @@ def resume():
     image_path = 'static/' + image.filename
     image.save(image_path)
 
-    return render_template('/resume',
+    return render_template('resume.html',
                         fullname = fullname,
                         address = address,
                         email = email,
@@ -76,4 +76,4 @@ def resume():
                         skills = skills,
                         image_path = image_path)
 if __name__ == '__main__':
-    app.run(debug = False)
+    app.run(debug = True)
