@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, session, flash
 import sqlite3
 
 app = Flask(__name__, template_folder = 'H:/Flask/User Login app/template')
@@ -75,5 +75,30 @@ def resume():
                         mobile = mobile,
                         skills = skills,
                         image_path = image_path)
+@app.route('/profile', methods = ['POST', 'GET'])
+def profile():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+    con = sqlite3.connect('users.db')
+    cur = con.cursor()
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+
+        cur.execute('UPDATE users SET username = ?, email = ? WHERE id = ?', (username, email, user_id))
+        con.commit()
+        flash('Profile updated successfully')
+    cur.execute('SELECT username, email FROM users WHERE id = ?', (user_id,))
+    user = cur.fetchone()
+    con.close()
+
+    return render_template('profile.html', user = user)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run(debug = True)
